@@ -151,6 +151,7 @@ class _TaskFormState extends State<TaskForm> {
                 ),
                 const SizedBox(height: 10),
                 TextField(
+                  key: const ValueKey('task-title-input'),
                   controller: title,
                   decoration: inputDecoration('Task title', Icons.task_alt),
                 ),

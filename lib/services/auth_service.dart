@@ -11,6 +11,10 @@ class AuthService {
 
   User? get currentUser => _auth.currentUser;
 
+  String? get currentUserId => _auth.currentUser?.uid;
+
+  bool get isLoggedIn => _auth.currentUser != null;
+
   Future<UserCredential> signUp({
     required String email,
     required String password,

@@ -62,3 +62,5 @@ app.*.map.json
 *.keystore
 /android/key.properties
 
+
+/lib/phase.txt

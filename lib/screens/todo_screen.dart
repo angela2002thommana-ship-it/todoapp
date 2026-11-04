@@ -13,7 +13,9 @@ import 'calender_page.dart';
 import 'insights_page.dart';
 
 class TodoScreen extends StatefulWidget {
-  const TodoScreen({super.key});
+  final bool enableVideo;
+
+  const TodoScreen({super.key, this.enableVideo = true});
 
   @override
   State<TodoScreen> createState() => _TodoScreenState();
@@ -267,6 +269,8 @@ class _TodoScreenState extends State<TodoScreen> {
 
     return VideoBackground(
       overlayColor: Colors.transparent,
+      enableVideo: widget.enableVideo,
+
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(

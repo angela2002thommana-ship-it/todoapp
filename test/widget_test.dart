@@ -1,36 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:todoapp/app.dart';
-
+import 'package:provider/provider.dart';
+import 'package:todoapp/providers/todo_provider.dart';
+import 'package:todoapp/screens/todo_screen.dart';
 
 void main() {
   testWidgets('a task can be added to the list', (tester) async {
-    await tester.pumpWidget(const TodoApp());
+    final provider = TodoProvider.forTesting(userId: 'test-user');
 
-    await tester.tap(find.text('Add a task'));
+    await tester.pumpWidget(
+      ChangeNotifierProvider<TodoProvider>.value(
+        value: provider,
+        child: const MaterialApp(home: TodoScreen(enableVideo: false)),
+      ),
+    );
+
+    await tester.pump();
+
+    expect(find.byType(FloatingActionButton), findsOneWidget);
+
+    await tester.tap(find.byType(FloatingActionButton));
     await tester.pumpAndSettle();
-    await tester.enterText(
-      find.byKey(const ValueKey('task-title-input')),
-      'Send the invoice',
-    );
+
+    final titleField = find.byKey(const ValueKey('task-title-input'));
+
+    expect(titleField, findsOneWidget);
+
+    await tester.enterText(titleField, 'Send the invoice');
+
     expect(
-      tester
-          .widget<TextField>(find.byKey(const ValueKey('task-title-input')))
-          .controller!
-          .text,
+      tester.widget<TextField>(titleField).controller!.text,
       'Send the invoice',
     );
-    await tester.testTextInput.receiveAction(TextInputAction.done);
+
+    final addTaskButton = find.widgetWithText(ElevatedButton, 'Add Task');
+
+    await tester.ensureVisible(addTaskButton);
+    await tester.tap(addTaskButton);
     await tester.pumpAndSettle();
 
     expect(find.text('Send the invoice'), findsOneWidget);
+
+    provider.dispose();
   });
 }
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-
-

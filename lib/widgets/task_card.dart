@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -37,15 +36,14 @@ class TaskCard extends StatelessWidget {
     final borderColor = todo.pinned
         ? const Color.fromARGB(255, 116, 48, 233)
         : todo.important
-            ? const Color.fromARGB(255, 241, 227, 29)
-            : todo.done
-                ? const Color.fromARGB(255, 85, 235, 72)
-                : color.withValues(alpha: 0.8);
+        ? const Color.fromARGB(255, 241, 227, 29)
+        : todo.done
+        ? const Color.fromARGB(255, 85, 235, 72)
+        : color.withValues(alpha: 0.8);
 
-    final borderWidth =
-        (todo.pinned || todo.important || todo.done)
-            ? 3.0
-            : 1.0;
+    final borderWidth = (todo.pinned || todo.important || todo.done)
+        ? 3.0
+        : 1.0;
 
     return Card(
       margin: EdgeInsets.zero,
@@ -54,10 +52,7 @@ class TaskCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(18),
-        side: BorderSide(
-          color: borderColor,
-          width: borderWidth,
-        ),
+        side: BorderSide(color: borderColor, width: borderWidth),
       ),
       child: InkWell(
         onTap: onDetails,
@@ -75,57 +70,54 @@ class TaskCard extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.all(8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _topRow(),
-                const SizedBox(height: 4),
-                Text(
-                  todo.title,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 13,
-                    height: 1.15,
-                    fontWeight: FontWeight.bold,
-                    decoration: isDone
-                        ? TextDecoration.lineThrough
-                        : null,
-                    color: isDone
-                        ? const Color.fromARGB(255, 78, 67, 233)
-                        : const Color(0xFF3B3355),
-                  ),
-                ),
-                if (todo.description.isNotEmpty) ...[
-                  const SizedBox(height: 3),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _topRow(),
+                  const SizedBox(height: 4),
                   Text(
-                    todo.description,
+                    todo.title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: 10,
-                      height: 1.2,
-                      color: const Color.fromARGB(255, 60, 104, 250),
+                      fontSize: 13,
+                      height: 1.15,
+                      fontWeight: FontWeight.bold,
+                      decoration: isDone ? TextDecoration.lineThrough : null,
+                      color: isDone
+                          ? const Color.fromARGB(255, 78, 67, 233)
+                          : const Color(0xFF3B3355),
                     ),
                   ),
-                ],
-                const SizedBox(height: 5),
-                Wrap(
-                  spacing: 4,
-                  runSpacing: 3,
-                  children: [
-                    _priorityTag(),
-                    _categoryTag(),
+                  if (todo.description.isNotEmpty) ...[
+                    const SizedBox(height: 3),
+                    Text(
+                      todo.description,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 10,
+                        height: 1.2,
+                        color: Color.fromARGB(255, 60, 104, 250),
+                      ),
+                    ),
                   ],
-                ),
-                const SizedBox(height: 6),
-                _dateRow(),
-                if (!todo.done) ...[
-                  const SizedBox(height: 8),
-                  _timerControls(context),
+                  const SizedBox(height: 5),
+                  Wrap(
+                    spacing: 4,
+                    runSpacing: 3,
+                    children: [_priorityTag(), _categoryTag()],
+                  ),
+                  const SizedBox(height: 6),
+                  _dateRow(),
+                  if (!todo.done) ...[
+                    const SizedBox(height: 8),
+                    _timerControls(context),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
         ),
@@ -133,13 +125,9 @@ class TaskCard extends StatelessWidget {
     );
   }
 
-
   Widget _timerControls(BuildContext context) {
     return StreamBuilder<int>(
-      stream: Stream<int>.periodic(
-        const Duration(seconds: 1),
-        (tick) => tick,
-      ),
+      stream: Stream<int>.periodic(const Duration(seconds: 1), (tick) => tick),
       builder: (context, snapshot) {
         final provider = context.watch<TodoProvider>();
         final isRunning = todo.isTimerRunning;
@@ -148,10 +136,7 @@ class TaskCard extends StatelessWidget {
 
         return Container(
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 8,
-            vertical: 7,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 7),
           decoration: BoxDecoration(
             color: Colors.white.withValues(alpha: 0.62),
             borderRadius: BorderRadius.circular(12),
@@ -203,8 +188,8 @@ class TaskCard extends StatelessWidget {
                       label: isRunning
                           ? 'Pause'
                           : hasTrackedTime
-                              ? 'Resume'
-                              : 'Start',
+                          ? 'Resume'
+                          : 'Start',
                       icon: isRunning
                           ? Icons.pause_rounded
                           : Icons.play_arrow_rounded,
@@ -254,10 +239,7 @@ class TaskCard extends StatelessWidget {
           ? FilledButton.icon(
               onPressed: onPressed,
               icon: Icon(icon, size: 15),
-              label: Text(
-                label,
-                style: const TextStyle(fontSize: 10),
-              ),
+              label: Text(label, style: const TextStyle(fontSize: 10)),
               style: FilledButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 7),
                 backgroundColor: const Color(0xFF6B8FE8),
@@ -272,10 +254,7 @@ class TaskCard extends StatelessWidget {
           : OutlinedButton.icon(
               onPressed: onPressed,
               icon: Icon(icon, size: 15),
-              label: Text(
-                label,
-                style: const TextStyle(fontSize: 10),
-              ),
+              label: Text(label, style: const TextStyle(fontSize: 10)),
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 7),
                 foregroundColor: const Color(0xFF3B3355),
@@ -311,41 +290,26 @@ class TaskCard extends StatelessWidget {
         IconButton(
           onPressed: onToggle,
           padding: EdgeInsets.zero,
-          constraints: const BoxConstraints(
-            minWidth: 28,
-            minHeight: 28,
-          ),
+          constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
           icon: Icon(
-            todo.done
-                ? Icons.check_circle
-                : Icons.radio_button_unchecked,
+            todo.done ? Icons.check_circle : Icons.radio_button_unchecked,
             size: 21,
             color: todo.done
                 ? const Color.fromARGB(255, 6, 129, 10)
                 : const Color(0xFF3B3355),
           ),
-          tooltip: todo.done
-              ? 'Mark pending'
-              : 'Mark complete',
+          tooltip: todo.done ? 'Mark pending' : 'Mark complete',
         ),
         const Spacer(),
         if (todo.important)
           const Padding(
             padding: EdgeInsets.only(right: 3),
-            child: Icon(
-              Icons.star,
-              size: 20,
-              color: Colors.amber,
-            ),
+            child: Icon(Icons.star, size: 20, color: Colors.amber),
           ),
         if (todo.pinned)
           const Padding(
             padding: EdgeInsets.only(right: 3),
-            child: Icon(
-              Icons.push_pin,
-              size: 15,
-              color: Colors.deepPurple,
-            ),
+            child: Icon(Icons.push_pin, size: 15, color: Colors.deepPurple),
           ),
         SizedBox(
           width: 28,
@@ -381,40 +345,24 @@ class TaskCard extends StatelessWidget {
               }
             },
             itemBuilder: (context) => [
-              _menuItem(
-                'details',
-                Icons.visibility_outlined,
-                'View details',
-              ),
+              _menuItem('details', Icons.visibility_outlined, 'View details'),
               _menuItem(
                 'toggle',
                 todo.done
                     ? Icons.radio_button_unchecked
                     : Icons.check_circle_outline,
-                todo.done
-                    ? 'Mark pending'
-                    : 'Mark complete',
+                todo.done ? 'Mark pending' : 'Mark complete',
               ),
-              _menuItem(
-                'edit',
-                Icons.edit_outlined,
-                'Edit task',
-              ),
+              _menuItem('edit', Icons.edit_outlined, 'Edit task'),
               _menuItem(
                 'pin',
-                todo.pinned
-                    ? Icons.push_pin
-                    : Icons.push_pin_outlined,
+                todo.pinned ? Icons.push_pin : Icons.push_pin_outlined,
                 todo.pinned ? 'Unpin task' : 'Pin task',
               ),
               _menuItem(
                 'important',
-                todo.important
-                    ? Icons.star
-                    : Icons.star_border,
-                todo.important
-                    ? 'Remove importance'
-                    : 'Mark important',
+                todo.important ? Icons.star : Icons.star_border,
+                todo.important ? 'Remove importance' : 'Mark important',
               ),
               _menuItem(
                 'delete',
@@ -439,18 +387,9 @@ class TaskCard extends StatelessWidget {
       value: value,
       child: Row(
         children: [
-          Icon(
-            icon,
-            size: 19,
-            color: color,
-          ),
+          Icon(icon, size: 19, color: color),
           const SizedBox(width: 10),
-          Flexible(
-            child: Text(
-              title,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
+          Flexible(child: Text(title, overflow: TextOverflow.ellipsis)),
         ],
       ),
     );
@@ -464,10 +403,7 @@ class TaskCard extends StatelessWidget {
       Priority.high => const Color.fromARGB(255, 161, 13, 3),
     };
 
-    return tag(
-      todo.priority.name.toUpperCase(),
-      priorityColor,
-    );
+    return tag(todo.priority.name.toUpperCase(), priorityColor);
   }
 
   Widget _categoryTag() {
@@ -480,10 +416,7 @@ class TaskCard extends StatelessWidget {
       Category.other => Colors.grey,
     };
 
-    return tag(
-      todo.category.name.toUpperCase(),
-      categoryColor,
-    );
+    return tag(todo.category.name.toUpperCase(), categoryColor);
   }
 
   Widget _dateRow() {
@@ -515,42 +448,30 @@ class TaskCard extends StatelessWidget {
     }
 
     final now = DateTime.now();
-    final today = DateTime(
-      now.year,
-      now.month,
-      now.day,
-    );
-    final dueDay = DateTime(
-      dueDate.year,
-      dueDate.month,
-      dueDate.day,
-    );
+    final today = DateTime(now.year, now.month, now.day);
+    final dueDay = DateTime(dueDate.year, dueDate.month, dueDate.day);
 
     final daysLeft = dueDay.difference(today).inDays;
 
     final dateColor = todo.done
         ? const Color.fromARGB(255, 3, 94, 6)
         : daysLeft < 0
-            ? const Color.fromARGB(255, 167, 14, 3)
-            : daysLeft == 0
-                ? const Color.fromARGB(255, 243, 60, 4)
-                : const Color.fromARGB(255, 65, 44, 105);
+        ? const Color.fromARGB(255, 167, 14, 3)
+        : daysLeft == 0
+        ? const Color.fromARGB(255, 243, 60, 4)
+        : const Color.fromARGB(255, 65, 44, 105);
 
     final dateText = todo.done
         ? 'Completed'
         : daysLeft < 0
-            ? '${daysLeft.abs()}d overdue'
-            : daysLeft == 0
-                ? 'Due today'
-                : '$daysLeft days left';
+        ? '${daysLeft.abs()}d overdue'
+        : daysLeft == 0
+        ? 'Due today'
+        : '$daysLeft days left';
 
     return Row(
       children: [
-        Icon(
-          Icons.calendar_today_outlined,
-          size: 12,
-          color: dateColor,
-        ),
+        Icon(Icons.calendar_today_outlined, size: 12, color: dateColor),
         const SizedBox(width: 4),
         Expanded(
           child: Text(
