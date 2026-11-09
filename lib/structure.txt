@@ -1,43 +1,55 @@
-lib/
-├── main.dart
-├── app.dart
-|___firebase_options.dart
-|
-|
-├── models/
-│   └── todo.dart
-|
-├── providers/
-│   └── todo_provider.dart 
-|      
-├── screens/
-│   ├── todo_screen.dart
-│   ├── calendar_page.dart
-│   └── insights_page.dart
-|   |__auth_screen.dart
-|
-|
-├── widgets/
-│   ├── task_card.dart
-│   ├── task_form.dart
-│   └── common_widgets.dart
-|   |__animated_card.dart
-|   |__video_background.dart
-|
-|
-├── painters/
-│   └── pie_painter.dart
-|
-├── services/
-│   └── auth_service.drat
-|   |__ notification_service.dart
-|   |__shared_preferences.dart
-|   |__firestore_todo_service.dart
-|
-└── utils/
-|    ├── constants.dart
-|   └── todo_utils.dart
-|
-|___assets/
-      |__videos/
-           |___pink_sparkling_water.mp4
+
+My TodoApp – Project Structure
+-----------------------------
+
+todoapp/
+│
+├── lib/
+│   │
+│   ├── main.dart
+│   ├── app.dart
+│   ├── firebase_options.dart
+│   ├── phase.txt
+│   ├── structure.txt
+│   │
+│   ├── assets/
+│   │   ├── images/
+│   │   │   └── bioluminescent_plankton.jpeg
+│   │   │
+│   │   └── videos/
+│   │       └── pink_sparkling_water.mp4
+│   │
+│   ├── models/
+│   │   └── todo.dart
+│   │
+│   ├── painters/
+│   │   └── pie_painter.dart
+│   │
+│   ├── providers/
+│   │   └── todo_provider.dart
+│   │
+│   ├── screens/
+│   │   ├── auth_screen.dart
+│   │   ├── calender_page.dart
+│   │   ├── insights_page.dart
+│   │   └── todo_screen.dart
+│   │
+│   ├── services/
+│   │   ├── auth_service.dart
+│   │   ├── firestore_todo_service.dart
+│   │   ├── notification_service.dart
+│   │   └── shared_preferences_services.dart
+│   │
+│   ├── utils/
+│   │   ├── constants.dart
+│   │   └── todo_utils.dart
+│   │
+│   └── widgets/
+│       ├── animated_card.dart
+│       ├── common_widgets.dart
+│       ├── task_card.dart
+│       ├── task_form.dart
+│       └── video_background.dart
+│
+└── test/
+    └── widget_test.dart

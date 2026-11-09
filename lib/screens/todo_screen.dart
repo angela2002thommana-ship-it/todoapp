@@ -9,6 +9,7 @@ import '../widgets/task_card.dart';
 import '../widgets/task_form.dart';
 import '../widgets/video_background.dart';
 import '../widgets/animated_card.dart';
+import '../services/auth_service.dart';
 import 'calender_page.dart';
 import 'insights_page.dart';
 
@@ -185,6 +186,60 @@ class _TodoScreenState extends State<TodoScreen> {
     );
   }
 
+  Future<void> _confirmSignOut() async {
+    final shouldSignOut = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: const Text(
+            'Sign Out?',
+            style: TextStyle(
+              color: Color(0xFF493347),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: const Text(
+            'Are you sure you want to sign out of your account?',
+            style: TextStyle(color: Color(0xFF493347)),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext, false);
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(dialogContext, true);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF236397),
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('Sign Out'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (shouldSignOut != true || !mounted) return;
+
+    try {
+      await AuthService.instance.signOut();
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Unable to sign out. Please try again.')),
+      );
+    }
+  }
+
   void openTask([Todo? todo]) {
     showModalBottomSheet(
       context: context,
@@ -270,7 +325,6 @@ class _TodoScreenState extends State<TodoScreen> {
     return VideoBackground(
       overlayColor: Colors.transparent,
       enableVideo: widget.enableVideo,
-
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(
@@ -323,6 +377,8 @@ class _TodoScreenState extends State<TodoScreen> {
           Expanded(
             child: Text(
               'My Todo List',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: const Color.fromARGB(255, 248, 247, 252),
                 fontSize: width < 500 ? 22 : 26,
@@ -347,6 +403,42 @@ class _TodoScreenState extends State<TodoScreen> {
             tooltip: 'Insights',
             icon: const Icon(Icons.insights),
             color: const Color.fromARGB(255, 2, 41, 73),
+          ),
+          PopupMenuButton<String>(
+            tooltip: 'Account',
+            icon: const Icon(
+              Icons.account_circle,
+              color: Color.fromARGB(255, 2, 41, 73),
+              size: 26,
+            ),
+            onSelected: (value) {
+              if (value == 'sign_out') {
+                _confirmSignOut();
+              }
+            },
+            itemBuilder: (context) => [
+              PopupMenuItem<String>(
+                enabled: false,
+                child: Text(
+                  AuthService.instance.currentUser?.email ?? 'Your Account',
+                  style: const TextStyle(
+                    color: Color(0xFF493347),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const PopupMenuDivider(),
+              const PopupMenuItem<String>(
+                value: 'sign_out',
+                child: Row(
+                  children: [
+                    Icon(Icons.logout, color: Colors.red),
+                    SizedBox(width: 10),
+                    Text('Sign Out', style: TextStyle(color: Colors.red)),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),

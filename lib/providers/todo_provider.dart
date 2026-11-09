@@ -23,7 +23,6 @@ class TodoProvider extends ChangeNotifier {
   final List<Todo> _todos = [];
 
   bool _isLoading = true;
-  bool _cloudReady = false;
   Future<void> _saveQueue = Future<void>.value();
 
   List<Todo> get todos => List.unmodifiable(_todos);
@@ -105,7 +104,6 @@ class TodoProvider extends ChangeNotifier {
     if (cloud == null) return;
 
     _isLoading = true;
-    _cloudReady = false;
     notifyListeners();
 
     try {
@@ -130,8 +128,6 @@ class TodoProvider extends ChangeNotifier {
       for (var i = 1; i < runningTasks.length; i++) {
         _pauseTaskTimer(runningTasks[i]);
       }
-
-      _cloudReady = true;
 
       for (final todo in _todos) {
         if (todo.timerStartedAt == null) {
