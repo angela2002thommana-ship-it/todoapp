@@ -12,7 +12,6 @@ class TaskForm extends StatefulWidget {
   final Future<DateTime?> Function(DateTime?) pickDate;
   final String Function(DateTime) dateText;
   final int Function(DateTime) daysLeft;
-  final VoidCallback onDelete;
   final void Function(Todo data, bool editing) onSave;
 
   const TaskForm({
@@ -22,7 +21,6 @@ class TaskForm extends StatefulWidget {
     required this.pickDate,
     required this.dateText,
     required this.daysLeft,
-    required this.onDelete,
     required this.onSave,
   });
 
@@ -55,7 +53,6 @@ class _TaskFormState extends State<TaskForm> {
     final todo = widget.todo;
 
     title = TextEditingController(text: todo?.title ?? '');
-
     description = TextEditingController(text: todo?.description ?? '');
 
     priority = todo?.priority ?? Priority.none;
@@ -139,14 +136,6 @@ class _TaskFormState extends State<TaskForm> {
                         ),
                       ),
                     ),
-                    if (editing)
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          widget.onDelete();
-                        },
-                        icon: const Icon(Icons.delete, color: Colors.red),
-                      ),
                   ],
                 ),
                 const SizedBox(height: 10),

@@ -1,16 +1,18 @@
-
-My TodoApp – Project Structure
------------------------------
-
 todoapp/
+│
+├── android/
+│   └── ...                         # Android platform configuration
+│
+├── build/
+│   └── ...                         # Generated build files
 │
 ├── lib/
 │   │
-│   ├── main.dart
-│   ├── app.dart
-│   ├── firebase_options.dart
-│   ├── phase.txt
-│   ├── structure.txt
+│   ├── main.dart                   # Application entry point
+│   ├── app.dart                    # Main app configuration and authentication flow
+│   ├── firebase_options.dart       # Firebase configuration for Android and Web
+│   ├── phase.txt                   # Project phase information
+│   ├── structure.txt               # Project structure documentation
 │   │
 │   ├── assets/
 │   │   ├── images/
@@ -20,36 +22,51 @@ todoapp/
 │   │       └── pink_sparkling_water.mp4
 │   │
 │   ├── models/
-│   │   └── todo.dart
+│   │   └── todo.dart               # Todo model and task-related enums
 │   │
 │   ├── painters/
-│   │   └── pie_painter.dart
+│   │   └── pie_painter.dart        # Custom painter for pie chart graphics
 │   │
 │   ├── providers/
-│   │   └── todo_provider.dart
+│   │   └── todo_provider.dart      # Todo state management using Provider
 │   │
 │   ├── screens/
-│   │   ├── auth_screen.dart
-│   │   ├── calender_page.dart
-│   │   ├── insights_page.dart
-│   │   └── todo_screen.dart
+│   │   ├── auth_screen.dart        # Login and registration screen
+│   │   ├── todo_screen.dart        # Main todo dashboard
+│   │   ├── calender_page.dart      # Calendar view of tasks
+│   │   ├── insights_page.dart      # Productivity insights and statistics
+│   │   └── api_tasks_screen.dart   # Tasks managed through the REST API
 │   │
 │   ├── services/
-│   │   ├── auth_service.dart
+│   │   ├── auth_service.dart       # Firebase Authentication operations
 │   │   ├── firestore_todo_service.dart
+│   │   │                              # Cloud Firestore task operations
 │   │   ├── notification_service.dart
-│   │   └── shared_preferences_services.dart
+│   │   │                              # Local notifications and reminders
+│   │   ├── shared_preferences_services.dart
+│   │   │                              # Local task storage
+│   │   └── api_service.dart        # REST API requests (GET, POST, PATCH, DELETE)
 │   │
 │   ├── utils/
-│   │   ├── constants.dart
-│   │   └── todo_utils.dart
+│   │   ├── constants.dart         # Application constants
+│   │   └── todo_utils.dart        # Todo-related utility functions
 │   │
 │   └── widgets/
-│       ├── animated_card.dart
-│       ├── common_widgets.dart
-│       ├── task_card.dart
-│       ├── task_form.dart
-│       └── video_background.dart
+│       ├── animated_card.dart      # Animated card widget
+│       ├── common_widgets.dart     # Reusable common UI components
+│       ├── task_card.dart          # Individual task card
+│       ├── task_form.dart          # Task creation and editing form
+│       └── video_background.dart   # Background video widget
 │
-└── test/
-    └── widget_test.dart
+├── test/
+│   └── widget_test.dart            # Widget tests
+│
+├── web/
+│   └── ...                         # Web platform configuration
+│
+├── .gitignore                      # Files excluded from Git
+├── .metadata                       # Flutter project metadata
+├── analysis_options.yaml            # Dart analyzer configuration
+├── pubspec.yaml                    # Dependencies, assets and project settings
+├── pubspec.lock                    # Locked dependency versions
+└── README.md                        # Project documentation

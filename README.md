@@ -1,151 +1,156 @@
 # My Todo List
 
-A feature-rich and responsive Flutter Todo application designed to make everyday task management simple, organized, and productive. Built with Firebase Authentication and Cloud Firestore, the application provides secure user access, cloud-based task synchronization, productivity tracking, and a visually engaging user interface.
+A feature-rich, responsive Todo application built using **Flutter and Dart**, with Firebase Authentication, Cloud Firestore, REST API integration, task management, reminders, time tracking, and productivity insights.
+
+The application provides a user-friendly interface with an ocean-inspired visual design and supports both Android and Web platforms.
+
+---
 
 ## Features
 
-### Authentication and Cloud Storage
-- **Firebase Authentication:** Secure user registration and login.
-- **Cloud Firestore:** Store and synchronize user-specific tasks in the cloud.
-- **User-specific Data:** Keep each user's tasks securely separated.
-- **Cloud Synchronization:** Access task data across supported platforms.
+### 1. User Authentication
+- User registration and login using Firebase Authentication.
+- Email and password authentication.
+- Secure user-specific access.
+- Sign-out functionality.
 
-### Task Management
-- **Task Operations:** Create, edit, delete, pin, and complete tasks.
-- **Priority Management:** Organize tasks by Low, Medium, and High priority.
-- **Task Categories:** Classify tasks into Work, Study, Personal, Health, Finance, and Other.
-- **Smart Filtering:** Filter tasks by status, priority, due date, and completion.
-- **Recurring Tasks:** Manage daily, weekly, and monthly recurring tasks.
-- **Subtasks:** Break larger tasks into smaller, manageable activities.
-- **Time Tracking:** Track the time spent on individual tasks.
+### 2. Cloud Database and Synchronization
+- Firebase Cloud Firestore integration.
+- Store and retrieve user-specific tasks.
+- Synchronize task data with the cloud.
+- Organize tasks under individual user accounts.
+- SharedPreferences support for local storage.
 
-### Productivity and Notifications
-- **Task Reminders:** Receive notifications for scheduled tasks.
-- **Daily Productivity Summary:** Stay informed about daily task progress.
-- **Insights and Analytics:** Monitor task completion and productivity trends.
-- **Progress Tracking:** View completed, pending, overdue, and pinned tasks.
+### 3. Task Management
+- Create, edit, and delete tasks.
+- Mark tasks as completed or pending.
+- Pin important tasks.
+- Set task priorities:
+  - Low
+  - Medium
+  - High
+- Organize tasks using categories:
+  - Work
+  - Study
+  - Personal
+  - Health
+  - Finance
+  - Other
 
-### User Interface and Experience
-- **Bioluminescent Background:** Ocean-inspired visuals featuring glowing plankton and jellyfish.
-- **Animated Background Effects:** Subtle floating bubble animations.
-- **Authentication Interface:** Custom-designed login and registration screens.
-- **Responsive Layout:** Adaptable interface for different screen sizes.
-- **Reusable Widgets:** Organized and reusable UI components.
-- **Material Design 3:** Modern Flutter interface with a clean visual experience.
+### 4. Task Filtering and Sorting
+- Filter tasks based on completion status.
+- Filter by priority.
+- View important and pinned tasks.
+- Identify overdue and today's tasks.
+- Sort tasks by:
+  - Smart sorting
+  - Due date
+  - Priority
+  - Alphabetical order
+  - Newest first
 
-## Technologies Used
+### 5. Recurring Tasks and Subtasks
+- Create recurring tasks.
+- Supported repetition options:
+  - Daily
+  - Weekly
+  - Monthly
+- Add subtasks to organize larger activities.
+
+### 6. Time Tracking
+- Track time spent on individual tasks.
+- Start and pause task timers.
+- Maintain tracked time.
+- Record task completion information.
+
+### 7. Notifications and Reminders
+- Local notifications for task reminders.
+- Schedule reminders for tasks.
+- Daily productivity summaries.
+
+### 8. API Tasks
+A separate API Tasks screen provides task management through the Firestore REST API.
+
+Supported operations:
+- **GET:** Retrieve tasks.
+- **POST:** Create new tasks.
+- **PATCH:** Update existing tasks.
+- **DELETE:** Delete tasks.
+
+Additional functionality:
+- Create and edit tasks through dialogs.
+- Delete tasks with confirmation.
+- Mark tasks as completed.
+- Pin and mark tasks as important.
+- Filter tasks by status and priority.
+- Sort tasks by newest, alphabetical order, and priority.
+- Refresh task data.
+- Display loading, empty, and error states.
+- Handle API errors with user-friendly messages.
+
+### 9. Productivity Insights
+- View completed tasks.
+- Track pending and overdue tasks.
+- Monitor pinned tasks.
+- View productivity progress.
+- Analyze task completion statistics.
+
+### 10. User Interface
+- Ocean-inspired visual theme.
+- Bioluminescent plankton background image.
+- Animated water background video.
+- Floating bubble animations.
+- Custom login and registration interface.
+- Responsive layouts for different screen sizes.
+- Reusable widgets.
+- Material Design 3.
+
+---
+
+## 11. Technology Stack
 
 | Technology | Purpose |
 |---|---|
 | Flutter | Cross-platform application development |
 | Dart | Programming language |
 | Firebase Authentication | User authentication |
-| Cloud Firestore | Cloud database and synchronization |
+| Cloud Firestore | Cloud database |
+| Firestore REST API | API-based task operations |
 | Provider | State management |
-| SharedPreferences | Local preference storage |
-| Flutter Local Notifications | Task reminders and notifications |
-| Video Player | Animated video backgrounds |
+| SharedPreferences | Local data storage |
+| Flutter Local Notifications | Task reminders |
+| Video Player | Background video playback |
+| Material Design 3 | User interface design |
 
-## Project Structure
+---
+
+### 12. Firebase Setup
+
+In the Firebase Console:
+
+1. Enable Email/Password authentication under Authentication.
+2. Create a Cloud Firestore database.
+3. Configure Firestore security rules to restrict access to each user's data.
+4. Ensure the Firebase configuration matches the application.
+
+The application's user-specific task data is stored under:
 
 ```text
-todoapp/
-│
-├── lib/
-│   ├── main.dart
-│   ├── app.dart
-│   ├── firebase_options.dart
-│   │
-│   ├── assets/
-│   │   ├── images/
-│   │   │   └── bioluminescent_plankton.jpeg
-│   │   └── videos/
-│   │       └── pink_sparkling_water.mp4
-│   │
-│   ├── models/
-│   │   └── todo.dart
-│   │
-│   ├── painters/
-│   │   └── pie_painter.dart
-│   │
-│   ├── providers/
-│   │   └── todo_provider.dart
-│   │
-│   ├── screens/
-│   │   ├── auth_screen.dart
-│   │   ├── calender_page.dart
-│   │   ├── insights_page.dart
-│   │   └── todo_screen.dart
-│   │
-│   ├── services/
-│   │   ├── auth_service.dart
-│   │   ├── firestore_todo_service.dart
-│   │   ├── notification_service.dart
-│   │   └── shared_preferences_services.dart
-│   │
-│   ├── utils/
-│   │   ├── constants.dart
-│   │   └── todo_utils.dart
-│   │
-│   └── widgets/
-│       ├── animated_card.dart
-│       ├── common_widgets.dart
-│       ├── task_card.dart
-│       ├── task_form.dart
-│       └── video_background.dart
-│
-└── test/
-    └── widget_test.dart
+users/
+   └── {uid}/
+       └── todos/
+           └── {todoId}
+```
 
 
-## Getting Started
+## 13. Application Objective
 
-### Prerequisites
+The objective of this project is to develop a practical and secure productivity application that helps users organize daily activities, manage tasks, track time, receive reminders, and monitor their productivity.
 
-- Flutter SDK
-- Dart SDK
-- Android Studio or Visual Studio Code
-- Firebase account
-- Git
+By combining Flutter, Firebase, REST API integration, and Provider state management, the application demonstrates the implementation of modern cross-platform application development concepts.
 
-### Installation
+---
 
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/angela2002thommana-ship-it/todoapp.git
-   ```
-
-2. Navigate to the project directory:
-
-   ```bash
-   cd todoapp
-   ```
-
-3. Install dependencies:
-
-   ```bash
-   flutter pub get
-   ```
-
-4. Configure Firebase for your own Firebase project using FlutterFire CLI:
-
-   ```bash
-   flutterfire configure
-   ```
-
-5. Run the application:
-
-   ```bash
-   flutter run
-   ```
-
-**Note:** Configure Firebase Authentication and Cloud Firestore in your Firebase project before running the application. The generated `firebase_options.dart` must correspond to your Firebase project.
-
-## Project Objective
-
-To develop a practical, secure, and user-friendly productivity application that simplifies everyday task management. The application combines task organization, reminders, recurring activities, time tracking, cloud synchronization, and productivity insights within a visually engaging and responsive interface.
-
-## Author
+## 14. Author
 
 Developed as a Flutter application project.

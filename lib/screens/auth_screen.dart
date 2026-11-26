@@ -390,7 +390,7 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
                   : 'Create an account and manage your tasks anywhere.',
               textAlign: TextAlign.center,
               style: const TextStyle(
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.bold,
                 color: Color(0xFFD0F2FF),
                 fontSize: 13,
                 height: 1.4,

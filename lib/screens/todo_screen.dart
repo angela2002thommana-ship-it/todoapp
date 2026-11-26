@@ -12,6 +12,7 @@ import '../widgets/animated_card.dart';
 import '../services/auth_service.dart';
 import 'calender_page.dart';
 import 'insights_page.dart';
+import 'api_tasks_screen.dart';
 
 class TodoScreen extends StatefulWidget {
   final bool enableVideo;
@@ -252,11 +253,6 @@ class _TodoScreenState extends State<TodoScreen> {
           pickDate: pickDate,
           dateText: dateText,
           daysLeft: daysLeft,
-          onDelete: () {
-            if (todo != null) {
-              deleteTodo(todo);
-            }
-          },
           onSave: (data, editing) {
             final provider = context.read<TodoProvider>();
 
@@ -269,6 +265,24 @@ class _TodoScreenState extends State<TodoScreen> {
         );
       },
     );
+  }
+
+  Future<void> openApiTasks() async {
+    final todoProvider = context.read<TodoProvider>();
+
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ChangeNotifierProvider.value(
+          value: todoProvider,
+          child: const ApiTasksScreen(),
+        ),
+      ),
+    );
+
+    if (!mounted) return;
+
+    await todoProvider.loadTodos();
   }
 
   void openCalendar() {
@@ -412,7 +426,9 @@ class _TodoScreenState extends State<TodoScreen> {
               size: 26,
             ),
             onSelected: (value) {
-              if (value == 'sign_out') {
+              if (value == 'api_tasks') {
+                openApiTasks();
+              } else if (value == 'sign_out') {
                 _confirmSignOut();
               }
             },
@@ -428,6 +444,16 @@ class _TodoScreenState extends State<TodoScreen> {
                 ),
               ),
               const PopupMenuDivider(),
+              const PopupMenuItem<String>(
+                value: 'api_tasks',
+                child: Row(
+                  children: [
+                    Icon(Icons.cloud_download_outlined),
+                    SizedBox(width: 10),
+                    Text('API Tasks'),
+                  ],
+                ),
+              ),
               const PopupMenuItem<String>(
                 value: 'sign_out',
                 child: Row(
@@ -564,66 +590,19 @@ class _TodoScreenState extends State<TodoScreen> {
             style: TextStyle(color: Colors.white, fontSize: 18),
           ),
         ),
-        suffixIcon: IconButton(
-          tooltip: 'Clear Search',
-          icon: const Icon(
-            Icons.delete_outline,
-            color: Color.fromARGB(255, 1, 40, 146),
-            size: 26,
-          ),
-          onPressed: () async {
-            if (search.text.isEmpty) return;
-
-            final shouldClear = await showDialog<bool>(
-              context: context,
-              builder: (dialogContext) {
-                return AlertDialog(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  title: const Text(
-                    'Clear Search?',
-                    style: TextStyle(
-                      color: Color(0xFF493347),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  content: const Text(
-                    'Do you want to delete the search text?',
-                    style: TextStyle(color: Color.fromARGB(255, 63, 2, 78)),
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(dialogContext, false);
-                      },
-                      child: const Text('No'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(dialogContext, true);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(
-                          255,
-                          18,
-                          118,
-                          212,
-                        ),
-                        foregroundColor: Colors.white,
-                      ),
-                      child: const Text('Yes'),
-                    ),
-                  ],
-                );
-              },
-            );
-
-            if (shouldClear == true && mounted) {
-              search.clear();
-            }
-          },
-        ),
+        suffixIcon: search.text.isNotEmpty
+            ? IconButton(
+                tooltip: 'Clear Search',
+                icon: const Icon(
+                  Icons.close,
+                  color: Color.fromARGB(255, 1, 40, 146),
+                  size: 26,
+                ),
+                onPressed: () {
+                  search.clear();
+                },
+              )
+            : null,
       ),
     );
   }
@@ -918,6 +897,10 @@ class _TodoScreenState extends State<TodoScreen> {
             Navigator.pop(sheet);
             openTask(todo);
           },
+          onDelete: () {
+            Navigator.pop(sheet);
+            deleteTodo(todo);
+          },
         );
       },
     );
@@ -936,6 +919,7 @@ class TaskDetailsSheet extends StatelessWidget {
   final String description;
   final String? completionDate;
   final VoidCallback onEdit;
+  final VoidCallback onDelete;
 
   const TaskDetailsSheet({
     super.key,
@@ -950,6 +934,7 @@ class TaskDetailsSheet extends StatelessWidget {
     required this.description,
     required this.completionDate,
     required this.onEdit,
+    required this.onDelete,
   });
 
   Widget infoCard(String title, String value) {
@@ -1117,26 +1102,50 @@ class TaskDetailsSheet extends StatelessWidget {
                       child: infoCard('Completion Date', completionDate!),
                     ),
                   const SizedBox(height: 18),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: onEdit,
-                      icon: const Icon(Icons.edit),
-                      label: const Text('Edit Task'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(
-                          255,
-                          150,
-                          209,
-                          243,
-                        ),
-                        foregroundColor: const Color.fromARGB(255, 77, 5, 80),
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: onEdit,
+                          icon: const Icon(Icons.edit),
+                          label: const Text('Edit Task'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(
+                              255,
+                              150,
+                              209,
+                              243,
+                            ),
+                            foregroundColor: const Color.fromARGB(
+                              255,
+                              77,
+                              5,
+                              80,
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: onDelete,
+                          icon: const Icon(Icons.delete_outline),
+                          label: const Text('Delete Task'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFFFD9DE),
+                            foregroundColor: const Color(0xFFB42332),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

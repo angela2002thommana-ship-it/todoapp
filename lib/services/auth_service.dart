@@ -3,6 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthService {
   AuthService._();
 
+  Future<String?> get idToken async {
+    return await _auth.currentUser?.getIdToken();
+  }
+
   static final AuthService instance = AuthService._();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
